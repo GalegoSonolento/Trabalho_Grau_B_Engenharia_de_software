@@ -1,0 +1,72 @@
+task-management-api/
+├── src/
+│   ├── domain/
+│   │   ├── entities/       # Pydantic models (User)
+│   │   ├── ports/          # Repository interfaces
+│   │   ├── use_cases/      # Business logic
+│   │   └── exceptions/     # Custom exceptions
+│   ├── adapters/
+│   │   ├── api/            # FastAPI routers
+│   │   └── repository/     # MongoDB implementations
+│   ├── infrastructure/
+│   │   ├── config/         # MongoDB connection
+│   │   └── logging/        # Logging setup
+├── tests/
+│   ├── unit/               # Unit tests
+│   └── test_main.py        # Test entry point
+├── docs/
+│   ├── diagrams/           # Mermaid diagrams
+│   └── README.md           # Documentation
+├── .env                    # Environment variables
+├── main.py                 # FastAPI app
+├── requirements.txt        # Dependencies
+└── Procfile                # For deployment
+
+=====================================================
+
+task-management-api/ 
+├── src/ 
+│ ├── domain/ 
+│ │ ├── entities/ # Pydantic models for core business entities 
+│ │ │ ├── user.py # User entity (Pydantic model for user data) 
+│ │ │ ├── token.py # Token entity (Pydantic model for Bearer Token) 
+│ │ │ ├── task.py # Task entity (to be implemented for task data) 
+│ │ ├── ports/ # Abstract interfaces for repositories 
+│ │ │ ├── user_repository.py # Interface for user repository 
+│ │ │ ├── token_repository.py # Interface for token repository 
+│ │ │ ├── task_repository.py # Interface for task repository (to be implemented) 
+│ │ ├── use_cases/ # Business logic for operations 
+│ │ │ ├── user_use_cases.py # User-related business logic 
+│ │ │ ├── auth_use_cases.py # Authentication business logic 
+│ │ │ ├── task_use_cases.py # Task-related business logic (to be implemented) 
+│ │ ├── exceptions/ 
+│ │ │ ├── custom_exceptions.py # Custom exceptions for error handling 
+│ ├── adapters/ 
+│ │ ├── api/ # FastAPI routers for HTTP endpoints 
+│ │ │ ├── user_router.py # User-related API endpoints 
+│ │ │ ├── auth_router.py # Authentication API endpoints 
+│ │ │ ├── task_router.py # Task-related API endpoints (to be implemented) 
+│ │ ├── repository/ # MongoDB implementations of repository interfaces 
+│ │ │ ├── mongo_user_repository.py # MongoDB user repository 
+│ │ │ ├── mongo_token_repository.py # MongoDB token repository 
+│ │ │ ├── mongo_task_repository.py # MongoDB task repository (to be implemented) 
+│ ├── infrastructure/ 
+│ │ ├── config/ # Configuration for database and settings 
+│ │ │ ├── database.py # MongoDB client and repository factories 
+│ │ │ ├── settings.py # Environment variable configuration 
+│ │ ├── logging/ 
+│ │ │ ├── logger.py # Logging configuration 
+├── tests/ 
+│ ├── unit/ # Unit tests for use cases 
+│ │ ├── test_user_use_cases.py # Tests for user use cases 
+│ │ ├── test_auth_use_cases.py # Tests for auth use cases (to be implemented) 
+│ │ ├── test_task_use_cases.py # Tests for task use cases (to be implemented) 
+│ ├── test_main.py # Pytest configuration 
+├── docs/ 
+│ ├── diagrams/ 
+│ │ ├── data_model.mmd # Mermaid diagram for data model 
+│ ├── README.md # Project documentation 
+├── .env # Environment variables (MongoDB URI) 
+├── main.py # FastAPI application entry point 
+├── requirements.txt # Python dependencies 
+├── Procfile # Deployment configuration
