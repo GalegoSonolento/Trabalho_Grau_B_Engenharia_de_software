@@ -1,9 +1,16 @@
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Depends
 from pydantic import BaseModel
+from jose import jwt, JWTError
+from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordBearer
 
 users_db = {}
+user_passwords = {}
 user_id_counter = 1
+
+invalidated_tokens = set()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 tasks_db = {}
 task_id_counter = 1
@@ -18,6 +25,7 @@ class User(BaseModel):
 class UserCreate(BaseModel):
     username: str
     email: str
+    password: str
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -52,6 +60,31 @@ class AuthResponse(BaseModel):
 
 app = FastAPI()
 
+SECRET_KEY = "paodebatata"  # Troque por uma chave forte em produção!
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    if token in invalidated_tokens:
+        raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Credenciais inválidas")
+        for user in users_db.values():
+            if user.username == username and user.is_active:
+                return user
+        raise HTTPException(status_code=401, detail="Usuário não encontrado")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+
 # --- User Endpoints ---
 @app.post("/users", response_model=User)
 async def create_user(user: UserCreate):
@@ -63,18 +96,19 @@ async def create_user(user: UserCreate):
         is_active=True
     )
     users_db[user_id_counter] = user_obj
+    user_passwords[user_id_counter] = user.password
     user_id_counter += 1
     return user_obj
 
 @app.get("/users/{username}", response_model=User)
-async def get_user(username: str):
+async def get_user(username: str, current_user: User = Depends(get_current_user)):
     for user in users_db.values():
         if user.username == username:
             return user
     raise HTTPException(status_code=404, detail="User not found")
 
 @app.put("/users/{username}", response_model=User)
-async def update_user(username: str, user: UserUpdate):
+async def update_user(username: str, user: UserUpdate, current_user: User = Depends(get_current_user)):
     # Find the user by username
     for user_id, stored_user in users_db.items():
         if stored_user.username == username:
@@ -85,7 +119,7 @@ async def update_user(username: str, user: UserUpdate):
     raise HTTPException(status_code=404, detail="User not found")
 
 @app.delete("/users/{username}")
-async def delete_user(username: str):
+async def delete_user(username: str, current_user: User = Depends(get_current_user)):
     for user_id, stored_user in users_db.items():
         if stored_user.username == username:
             # Soft delete: set is_active to False
@@ -97,7 +131,7 @@ async def delete_user(username: str):
 
 # --- Task Endpoints ---
 @app.post("/tasks", response_model=Task)
-async def create_task(task: TaskCreate):
+async def create_task(task: TaskCreate, current_user: User = Depends(get_current_user)):
     global task_id_counter
     # Validate assigned_to if provided
     if task.assigned_to is not None:
@@ -115,20 +149,20 @@ async def create_task(task: TaskCreate):
     return task_obj
 
 @app.get("/tasks/{id}", response_model=Task)
-async def get_task(id: int):
+async def get_task(id: int, current_user: User = Depends(get_current_user)):
     task = tasks_db.get(id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
 
 @app.get("/tasks", response_model=List[Task])
-async def list_tasks(assigned_to: Optional[str] = None):
+async def list_tasks(assigned_to: Optional[str] = None, current_user: User = Depends(get_current_user)):
     if assigned_to:
         return [task for task in tasks_db.values() if task.assigned_to == assigned_to]
     return list(tasks_db.values())
 
 @app.put("/tasks/{id}", response_model=Task)
-async def update_task(id: int, task: TaskUpdate):
+async def update_task(id: int, task: TaskUpdate, current_user: User = Depends(get_current_user)):
     stored_task = tasks_db.get(id)
     if not stored_task:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -142,7 +176,7 @@ async def update_task(id: int, task: TaskUpdate):
     return updated_task
 
 @app.delete("/tasks/{id}")
-async def delete_task(id: int):
+async def delete_task(id: int, current_user: User = Depends(get_current_user)):
     if id not in tasks_db:
         raise HTTPException(status_code=404, detail="Task not found")
     del tasks_db[id]
@@ -151,5 +185,16 @@ async def delete_task(id: int):
 # --- Auth Endpoint ---
 @app.post("/auth/login", response_model=AuthResponse)
 async def login(auth: AuthRequest):
-    # Implement authentication logic (return dummy token for now)
-    return AuthResponse(access_token="dummy-token")
+    for user_id, user in users_db.items():
+        if user.username == auth.username and user.is_active:
+            if user_passwords.get(user_id) == auth.password:
+                access_token = create_access_token(data={"sub": user.username})
+                return AuthResponse(access_token=access_token)
+            else:
+                raise HTTPException(status_code=401, detail="Senha incorreta")
+    raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+@app.post("/auth/logout")
+async def logout(token: str = Depends(oauth2_scheme)):
+    invalidated_tokens.add(token)
+    return {"message": "Logout realizado com sucesso."}
