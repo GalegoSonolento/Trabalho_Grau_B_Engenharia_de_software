@@ -92,7 +92,7 @@ Usuários
 - Status: Aceito
 - Contexto: Desenvolvimento de uma API RESTful para um sistema de gestão de tarefas colaborativas, utilizando FastAPI e Arquitetura Monolitica Modular, conforme especificado no projeto da disciplina.
 - Decisão: Optamos por utilizar o MongoDB, um banco de dados NoSQL orientado a documentos, como a solução de armazenamento para a API.
-- Consequências: Alinhamento com API RESTful e Formato JSON, benefício: Simplifica a integração com modelos Pydantic do FastAPI, reduzindo o overhead de desenvolvimento; Flexibilidade de Esquema para Desenvolvimento Rápido, Suporte a Relacionamentos Simples, Compatibilidade com Arquitetura Hexagonal, Escalabilidade e Estado Stateless, Integração com FastAPI e Motor, Facilidade de Configuração e Implantação, Suporte a Documentação e Testes, Alternativas Consideradas
+- Consequências: Alinhamento com API RESTful e Formato JSON, benefício: Simplifica a integração com modelos Pydantic do FastAPI, reduzindo o overhead de desenvolvimento; Flexibilidade de Esquema para Desenvolvimento Rápido, Suporte a Relacionamentos Simples, Compatibilidade com Arquitetura Monolitca Modular, Escalabilidade e Estado Stateless, Integração com FastAPI e Motor, Facilidade de Configuração e Implantação, Suporte a Documentação e Testes, Alternativas Consideradas
 - Conformidade: Apesar de ser simples de implementar outro banco, uma vez o Mongo DB implementado ele não vai mais ser alterado (até porque apenas uma pessoa do grupo vai ser responsável por isso).
 - Anotações: Escolhido no dia da definição do trabalho mesmo, serviu como ponto de partida.
 
