@@ -4,3 +4,19 @@
 2025-06-03 09:36:32,500 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
 2025-06-03 09:36:48,873 ERROR:ID de usuário inválido: 683e40c20a1f90d930fefe9
 2025-06-03 09:37:05,981 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-03 19:05:40,733 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-03 19:06:02,788 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-03 19:06:36,149 INFO:Usuário criado: Henrique Teste 2 (id: 683f71ecae68f9461261cb25)
+2025-06-03 19:23:11,264 WARNING:Tentativa de criar usuário já existente: Henrique Teste 2
+2025-06-03 19:23:27,285 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-03 19:23:36,350 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-04 10:43:56,715 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-04 10:44:10,415 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-04 10:59:23,876 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-04 10:59:34,885 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-04 11:00:36,833 INFO:Listagem de tarefas. Filtro assigned_to: None
+2025-06-04 11:18:24,020 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-04 11:18:43,418 INFO:Listagem de tarefas. Filtro assigned_to: None
+2025-06-04 11:18:50,621 INFO:Usuário consultado: 683e40c20a1f90d930fefe9d
+2025-06-04 11:21:49,049 INFO:Login realizado com sucesso para usuário: ArthurMOD
+2025-06-04 11:22:00,849 INFO:Listagem de tarefas. Filtro assigned_to: None

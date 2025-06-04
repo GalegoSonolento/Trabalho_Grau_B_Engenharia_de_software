@@ -1,0 +1,27 @@
+Trabalho_Grau_B_Engenharia_de_software/
+│
+├── main.py
+├── models.py
+├── database.py
+├── logging_config.py
+├── routes/
+│   ├── users.py
+│   └── tasks.py
+├── auth.py
+├── config_URI.py
+└── logs/
+    └── app.log
+
+
+
+
+Trabalho_Grau_B_Engenharia_de_software/
+│
+├── main.py
+├── models.py
+├── database.py
+├── logging_config.py
+├── routes/
+│   ├── __init__.py
+│   ├── users.py
+│   └── tasks.py
