@@ -1,27 +1,27 @@
 Trabalho_Grau_B_Engenharia_de_software/
 │
-├── main.py
-├── models.py
-├── database.py
-├── logging_config.py
-├── routes/
-│   ├── users.py
-│   └── tasks.py
-├── auth.py
-├── config_URI.py
-└── logs/
-    └── app.log
-
-
-
-
-Trabalho_Grau_B_Engenharia_de_software/
-│
-├── main.py
-├── models.py
-├── database.py
-├── logging_config.py
-├── routes/
+├── controller/
+│   ├── __init__.py
+│   ├── auth_utils.py
+│   ├── config_URI.py   # Adicionado ao .gitignore para evitar mostrar conexão ao DB da aplicação
+│   ├── database.py
+│   ├── main.py
+├── docs/
+│   ├── estrutura.txt
+│   ├── README.MD
+│   ├── requirements.txt    # Arquivo com as dependências necessárias para rodar o servidor de aplicação
+├── logs/
+│   ├── app.log
+│   ├── logging_config.py
+├── model/
+│   ├── models.py
+├── testes/
+│   ├── __init__.py
+│   ├── .coverage
+│   ├── test_main.py
+├── view/
 │   ├── __init__.py
 │   ├── users.py
 │   └── tasks.py
+├── .gitignore
+├── LICENSE
